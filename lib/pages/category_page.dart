@@ -82,6 +82,7 @@ class _LeftCategoryNavState extends State<LeftCategoryNav> {
     await getCategoryData().then((onValue) {
       Provide.value<NotifierCategory>(context).setCategoryList(onValue);
       Provide.value<NotifierCategory>(context).setSubCategoryList(onValue[0].mallCategoryId, onValue[0].bxMallSubDto);
+      Provide.value<CategoryGoodsProvide>(context).getCategoryGoodsList(onValue[0].mallCategoryId, "");
     });
   }
 

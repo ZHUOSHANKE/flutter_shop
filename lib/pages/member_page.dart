@@ -39,13 +39,23 @@ class MemberPage extends StatelessWidget {
               padding: EdgeInsets.only(left: 12.0),
               margin: EdgeInsets.only(top: 12.0),
               color: Colors.white,
-              child: _getItemTile(Icons.confirmation_number, "领取优惠券"),
+              child: InkWell(
+                child: _getItemTile(Icons.confirmation_number, "领取优惠券"),
+                onTap: (){
+                  Application.router.navigateTo(context, Routers.VIDEO_PAGE);
+                },
+              ),
             ),
             Container(
               height: ScreenUtil().setHeight(80),
               padding: EdgeInsets.only(left: 12.0),
               decoration: BoxDecoration(color: Colors.white, border: Border(top: BorderSide(width: 0.5, color: Colors.black12))),
-              child: _getItemTile(Icons.confirmation_number, "已领取优惠券"),
+              child: InkWell(
+                child: _getItemTile(Icons.confirmation_number, "已领取优惠券"),
+                onTap: (){
+                  Application.router.navigateTo(context, Routers.VIDEO_PAGE_2);
+                },
+              )
             ),
             Container(
               height: ScreenUtil().setHeight(80),

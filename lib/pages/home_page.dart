@@ -1,14 +1,17 @@
+import 'package:amap_base_location/amap_base_location.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_shop/config/location_manager.dart';
 import 'package:flutter_shop/entity/home_bean_entity.dart';
 import 'package:flutter_shop/entity/hot_goods_entity.dart';
 import 'package:flutter_shop/previde/category_goods_provide.dart';
 import 'package:flutter_shop/previde/child_category.dart';
 import 'package:flutter_shop/previde/detail_info.dart';
 import 'package:flutter_shop/previde/index_page_provide.dart';
+import 'package:flutter_shop/previde/location_provide.dart';
 import 'package:flutter_shop/routers/appliaction.dart';
 import 'package:flutter_shop/routers/routers.dart';
 import 'package:flutter_shop/widget/custom_refresh.dart';
@@ -39,29 +42,32 @@ class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin 
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("首页",style: TextStyle(fontSize: 18.0),),
+          title: Text(
+            "首页",
+            style: TextStyle(fontSize: 18.0),
+          ),
         ),
         body: Container(
-          color: Color(0xFFEFEFEF),
-          child: FutureBuilder<HomeBeanEntity>(
-            builder: (context, snapshot) {
-              Widget widget;
-              if (snapshot.hasData) {
-                widget = _getListWidget(snapshot);
-              } else if (snapshot.hasError) {
-                widget = Center(
-                  child: Text("请求出错啦~"),
-                );
-              } else {
-                widget = Center(
-                  child: Text("获取数据中~"),
-                );
-              }
-              return widget;
-            },
-            future: getHomePageContent(),
-          ),
-        ));
+            color: Color(0xFFEFEFEF),
+            child: Provide<LocationProvide>(builder: (context, child, location) {
+              return FutureBuilder<HomeBeanEntity>(
+                  builder: (context, snapshot) {
+                    Widget widget;
+                    if (snapshot.hasData) {
+                      widget = _getListWidget(snapshot);
+                    } else if (snapshot.hasError) {
+                      widget = Center(
+                        child: Text("请求出错啦~"),
+                      );
+                    } else {
+                      widget = Center(
+                        child: Text("获取数据中~"),
+                      );
+                    }
+                    return widget;
+                  },
+                  future: getHomePageContent(location: location.location));
+            })));
   }
 
   @override
@@ -186,9 +192,8 @@ class TopNavigator extends StatelessWidget {
   Widget _gridViewItem(BuildContext context, HomeBeanCategory item) {
     return InkWell(
       onTap: () {
-        Provide.value<IndexPageProvide>(context).currentIndex=1;
-        Provide.value<NotifierCategory>(context)
-            .onClickMainCategoryChange(item.mallCategoryId,categoryList.indexOf(item));
+        Provide.value<IndexPageProvide>(context).currentIndex = 1;
+        Provide.value<NotifierCategory>(context).onClickMainCategoryChange(item.mallCategoryId, categoryList.indexOf(item));
         Provide.value<CategoryGoodsProvide>(context).getCategoryGoodsList(item.mallCategoryId, "");
       },
       child: Column(
@@ -448,7 +453,7 @@ class HotGoods extends StatelessWidget {
 
   _getHotTitle() {
     return Container(
-      margin: EdgeInsets.only(top: 5.0,bottom: 5.0),
+      margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -456,14 +461,15 @@ class HotGoods extends StatelessWidget {
             width: ScreenUtil().setHeight(30),
             height: ScreenUtil().setHeight(30),
             alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Colors.pinkAccent,
-              shape: BoxShape.circle
+            decoration: BoxDecoration(color: Colors.pinkAccent, shape: BoxShape.circle),
+            child: Text(
+              "火",
+              style: TextStyle(color: Colors.white, fontSize: 9.0),
             ),
-            child: Text("火",style: TextStyle(color: Colors.white,fontSize: 9.0),),
           ),
-          Text("火爆专区",
-            style: TextStyle(color: Colors.black87,fontSize: 12.0),
+          Text(
+            "火爆专区",
+            style: TextStyle(color: Colors.black87, fontSize: 12.0),
           )
         ],
       ),

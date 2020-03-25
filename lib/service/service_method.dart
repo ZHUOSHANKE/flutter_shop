@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:amap_base_location/amap_base_location.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_shop/config/location_manager.dart';
 import 'package:flutter_shop/entity/goods_detail_entity.dart';
 import 'package:flutter_shop/entity/home_bean_entity.dart';
 import 'package:flutter_shop/entity/hot_goods_entity.dart';
@@ -10,10 +13,10 @@ import '../config/api.dart';
 import '../config/api.dart';
 
 //获取首页主题内容
-Future<HomeBeanEntity> getHomePageContent() {
+Future<HomeBeanEntity> getHomePageContent({Location location}) {
   print("开始获取首页数据。。。。。。。。");
   try {
-    var formData = {"lon": "108.94712", "lat": "34.29318"};
+    var formData = {"lon": location!=null?location.longitude:"", "lat":location!=null?location.latitude:""};
     var future = httpPost(path: HOME_PAGE_CONTENT, map: formData);
     return future.then((response) {
       if (response.message == "success") {

@@ -1,4 +1,5 @@
 import 'package:flutter_shop/pages/cart_provide.dart';
+import 'package:flutter_shop/previde/location_provide.dart';
 import 'package:flutter_shop/previde/order_provide.dart';
 import 'package:provide/provide.dart';
 import 'package:flutter_shop/previde/notifier_category_goods.dart';
@@ -11,6 +12,7 @@ class  ConfigProvide extends  Provide{
   initProvide(){
     return Providers()
       ..provide(Provider<OrderProvide>.value(OrderProvide()))
+      ..provide(Provider<LocationProvide>.value(LocationProvide()))
       ..provide(Provider<IndexPageProvide>.value(IndexPageProvide()))
       ..provide(Provider<CartProvide>.value(CartProvide()))
       ..provide(Provider<IndexPageProvide>.value(IndexPageProvide()))
